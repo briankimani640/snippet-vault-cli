@@ -2,19 +2,16 @@ import json
 import os
 import argparse
 
-# The file where our snippets will be stored
 VAULT_FILE = 'snippets.json'
 
 def load_snippets():
-    """Loads snippets from the JSON file. Returns an empty dict if the file is missing or empty."""
+    """Loads snippets from the JSON file."""
     if not os.path.exists(VAULT_FILE):
         return {}
-    
     try:
         with open(VAULT_FILE, 'r') as file:
             return json.load(file)
     except json.JSONDecodeError:
-        # If the file exists but is empty or corrupted, return a fresh dictionary
         return {}
 
 def save_snippets(data):
@@ -22,10 +19,61 @@ def save_snippets(data):
     with open(VAULT_FILE, 'w') as file:
         json.dump(data, file, indent=4)
 
-if __name__ == "__main__":
-    # A quick local test to ensure our data layer works
-    print("Initializing Snippet Vault Data Layer...")
+def add_snippet(name, code, description=""):
+    """Adds a new snippet to the vault."""
+    data = load_snippets()
+    data[name] = {
+        "code": code,
+        "description": description
+    }
+    save_snippets(data)
+    print(f"✅ Snippet '{name}' saved successfully!")
+
+def list_snippets():
+    """Lists all available snippets."""
+    data = load_snippets()
+    if not data:
+        print("📭 Your vault is empty.")
+        return
     
-    # Try loading (should load an empty dict initially)
-    current_data = load_snippets()
-    print(f"Currently storing {len(current_data)} snippets.")
+    print("📚 Your Saved Snippets:")
+    for name, details in data.items():
+        desc = details.get('description', '')
+        print(f"  - {name}" + (f" ({desc})" if desc else ""))
+
+def get_snippet(name):
+    """Retrieves and prints a specific snippet."""
+    data = load_snippets()
+    if name in data:
+        print(f"\n--- {name} ---\n{data[name]['code']}\n")
+    else:
+        print(f"❌ Snippet '{name}' not found.")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="A local CLI vault for your code snippets.")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # Command to add a snippet
+    parser_add = subparsers.add_parser("add", help="Add a new snippet")
+    parser_add.add_argument("name", type=str, help="A short, memorable name for the snippet (e.g., 'docker-build')")
+    parser_add.add_argument("code", type=str, help="The actual code or command to save")
+    parser_add.add_argument("-d", "--desc", type=str, default="", help="An optional description")
+
+    # Command to list all snippets
+    parser_list = subparsers.add_parser("list", help="List all saved snippets")
+
+    # Command to get a snippet
+    parser_get = subparsers.add_parser("get", help="Retrieve a snippet by name")
+    parser_get.add_argument("name", type=str, help="The name of the snippet to retrieve")
+
+    args = parser.parse_args()
+
+    # Route the command to the correct function
+    if args.command == "add":
+        add_snippet(args.name, args.code, args.desc)
+    elif args.command == "list":
+        list_snippets()
+    elif args.command == "get":
+        get_snippet(args.name)
+    else:
+        parser.print_help()
