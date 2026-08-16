@@ -35,6 +35,6 @@ A lightweight, pure-Python command-line tool to safely store, manage, and retrie
    python vault.py delete build-docker
    ```
 
-##  Built With
+###  Built With
 * Pure Python 3
 * `argparse` and `json` standard libraries
