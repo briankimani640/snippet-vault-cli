@@ -2,7 +2,7 @@
 
 A lightweight, pure-Python command-line tool to safely store, manage, and retrieve your most-used code snippets, database commands, and scripts directly from your terminal.
 
-## 🚀 Features
+##  Features
 * **Zero Dependencies:** Built entirely with standard Python libraries.
 * **Local Storage:** Everything is saved locally in a clean `snippets.json` file.
 * **Fast Retrieval:** Search and pull your code instantly without leaving the command line.
