@@ -1,4 +1,4 @@
-#  CLI Code Snippet Vault
+##  CLI Code Snippet Vault
 
 A lightweight, pure-Python command-line tool to safely store, manage, and retrieve your most-used code snippets, database commands, and scripts directly from your terminal.
 
