@@ -7,7 +7,7 @@ A lightweight, pure-Python command-line tool to safely store, manage, and retrie
 * **Local Storage:** Everything is saved locally in a clean `snippets.json` file.
 * **Fast Retrieval:** Search and pull your code instantly without leaving the command line.
 
-## 💻 Usage
+##  Usage
 
 1. **Clone the repository:**
    ```bash
